@@ -31,7 +31,12 @@ class RegisterTeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["email","password"]
-
+    
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("A user with this email already exists.")
+        return value
+    
     def create(self,validated_data):
         user = User(
             email = validated_data["email"],
@@ -50,6 +55,11 @@ class RegisterStudentSerializer(serializers.ModelSerializer):
         model = User
         fields = ["email","password"]
 
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("A user with this email already exists.")
+        return value
+    
     def create(self,validated_data):
         user = User(
             email = validated_data["email"],
@@ -60,6 +70,7 @@ class RegisterStudentSerializer(serializers.ModelSerializer):
         user.set_password(validated_data["password"])
         user.save(creator=self.context["request"].user)
         return user
+    
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True, write_only=True)
     new_password = serializers.CharField(required=True, write_only=True)

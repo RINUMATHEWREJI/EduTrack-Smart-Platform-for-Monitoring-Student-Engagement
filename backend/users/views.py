@@ -10,6 +10,8 @@ from .serializers import (
     TeacherProfileSerializer,StudentProfileSerializer,
     ChangePasswordSerializer
 )
+from .permissions import IsSuperAdmin,IsTeacher
+from .models import TeacherProfile,StudentProfile
 
 User = get_user_model()
 
@@ -47,22 +49,22 @@ class LogoutView(APIView):
 
 
 class RegisterTeacherView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsSuperAdmin]
 
     def post(self,request):
         serializer = RegisterTeacherSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(creator=request.user)
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class RegisterStudentView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsTeacher]
 
     def post(self,request):
         serializer = RegisterStudentSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(creator=request.user)
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
@@ -102,3 +104,41 @@ class ChangePasswordView(APIView):
             serializer.save()
             return Response({"details":"password updated succesfully"})
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+class TeacherListView(APIView):
+    permission_classes = [IsSuperAdmin]
+
+    def get(self,request):
+        teachers = TeacherProfile.objects.select_related("user").all()
+        serializer = TeacherProfileSerializer(teachers,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+class TeacherDetailView(APIView):
+    permission_classes = [IsSuperAdmin]
+
+    def patch(self, request, id):
+        try:
+            teacher = TeacherProfile.objects.get(user__id=id)
+            # update teacher profile fields
+            for field in ["name", "bio", "department", "gender", "phone"]:
+                if field in request.data:
+                    setattr(teacher, field, request.data[field])
+            teacher.save()
+
+            # optionally update email
+            if "email" in request.data:
+                teacher.user.email = request.data["email"]
+                teacher.user.save()
+
+            serializer = TeacherProfileSerializer(teacher)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except TeacherProfile.DoesNotExist:
+            return Response({"detail": "Teacher not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request, id):
+        try:
+            teacher = User.objects.get(id=id, role="TEACHER")
+            teacher.delete()
+            return Response({"detail": "Teacher deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except User.DoesNotExist:
+            return Response({"detail": "Teacher not found"}, status=status.HTTP_404_NOT_FOUND)

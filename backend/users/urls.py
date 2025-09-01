@@ -3,7 +3,8 @@ from .views import(
     LoginView,LogoutView,
     RegisterTeacherView,RegisterStudentView,
     TeacherProfileView,StudentProfileView,
-    ChangePasswordView
+    ChangePasswordView,
+    TeacherListView,TeacherDetailView
     
 )
 
@@ -15,4 +16,7 @@ urlpatterns = [
     path("profile/teacher/",TeacherProfileView.as_view(),name="teacher-profile"),
     path("profile/student/",StudentProfileView.as_view(),name="student-profile"),
     path("changepassword/",ChangePasswordView.as_view(),name="change-password"),
+
+    path("teachers/", TeacherListView.as_view(), name="teacher-list"),
+    path("teachers/<int:id>/", TeacherDetailView.as_view(), name="teacher-delete"),
 ]

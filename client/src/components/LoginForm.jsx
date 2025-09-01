@@ -26,19 +26,27 @@ function LoginForm({onLogin}){
         }
     }
 
-    return(
-        <>
-        <div className="loginform" >
-            <form onSubmit={handleForm}>
-                <input type="email" value={email} placeholder="Email" onChange={(e)=>setEmail(e.target.value)} className="border p-2"/>
-                <input type="password" value={password} placeholder="password" onChange={(e)=>setPassword(e.target.value)} className="border p-2"/>
-                <button type="submit" className="bg-blue-500 text-white p-2">Login</button>
-                {error && <p className="text-red-500">{error}</p>}
-            </form>
-        </div>
-
-        </>
-    )
+     return (
+    <div className="login-container">
+      <form onSubmit={handleForm} className="login-form">
+        <h2>Login</h2>
+        <input
+          type="email"
+          value={email}
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          value={password}
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit">Login</button>
+        {error && <p className="error">{error}</p>}
+      </form>
+    </div>
+  );
 }
 
 export default LoginForm

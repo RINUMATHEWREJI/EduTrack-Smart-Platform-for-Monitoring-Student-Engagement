@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import TeacherPage from "./pages/TeacherPage";
 import StudentPage from "./pages/StudentPage";
 import AdminPage from "./pages/AdminPage";
-
+import './App.css'
 function App() {
   return (
     <>
