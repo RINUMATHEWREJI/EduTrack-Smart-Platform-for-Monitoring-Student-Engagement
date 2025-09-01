@@ -14,7 +14,7 @@ function LoginForm({onLogin}){
 
         try {
             const res = await axios.post(`${API_URL}login/`, { email, password });
-            setTokens(res.data.access, res.data.refresh);
+            setTokens(res.data.access,res.data.refresh,res.data.user);
             onLogin(res.data.user);
         } 
         catch (err) {
