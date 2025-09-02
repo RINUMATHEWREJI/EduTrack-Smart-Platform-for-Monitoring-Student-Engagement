@@ -142,3 +142,41 @@ class TeacherDetailView(APIView):
             return Response({"detail": "Teacher deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
         except User.DoesNotExist:
             return Response({"detail": "Teacher not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class StudentListView(APIView):
+    permission_classes = [IsTeacher]
+
+    def get(self,request):
+        students = StudentProfile.objects.select_related("user").all()
+        serializer = StudentProfileSerializer(students,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+class StudentDetailView(APIView):
+    permission_classes = [IsTeacher]
+
+    def patch(self, request, id):
+        try:
+            student = StudentProfile.objects.get(user__id=id)
+            # update teacher profile fields
+            for field in ["name", "department", "gender", "phone"]:
+                if field in request.data:
+                    setattr(student, field, request.data[field])
+            student.save()
+
+            # optionally update email
+            if "email" in request.data:
+                student.user.email = request.data["email"]
+                student.user.save()
+
+            serializer = StudentProfileSerializer(student)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except StudentProfile.DoesNotExist:
+            return Response({"detail": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request, id):
+        try:
+            student = User.objects.get(id=id, role="STUDENT")
+            student.delete()
+            return Response({"detail": "Student deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except User.DoesNotExist:
+            return Response({"detail": "Student not found"}, status=status.HTTP_404_NOT_FOUND)

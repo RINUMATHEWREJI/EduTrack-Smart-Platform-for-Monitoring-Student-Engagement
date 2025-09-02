@@ -1,0 +1,404 @@
+/* ---------- General Layout ---------- */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
+}
+
+.student-dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  width: 200px;
+  background-color: #1f2a38;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 15px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.sidebar button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: transparent;
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.sidebar button:hover,
+.sidebar button.active {
+  background-color: #2e3b50;
+  transform: translateX(5px);
+}
+
+.sidebar .logout-btn {
+  margin-top: auto;
+  background-color: #e74c3c;
+  font-weight: 600;
+  text-align: center;
+}
+
+.sidebar .logout-btn:hover {
+  background-color: #c0392b;
+  transform: translateX(0);
+}
+
+/* ---------- Right Content ---------- */
+.content {
+  margin-left: 250px;
+  flex: 1;
+  padding: 40px;
+  background-color: #f4f6f8;
+  min-height: 100vh;
+}
+
+/* ---------- Dashboard Header ---------- */
+.content h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #2c3e50;
+}
+
+/* ---------- Register Form ---------- */
+.register-form {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  max-width: 500px;
+  margin: 0 auto 40px auto;
+  transition: all 0.2s ease;
+}
+
+.register-form:hover {
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.register-form h2 {
+  margin-bottom: 20px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.register-form input {
+  width: 90%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  transition: border 0.2s ease;
+}
+
+.register-form input:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.register-form button {
+  width: 96%;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: none;
+  background-color: #3498db;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.register-form button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.register-form .error {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.register-form .success {
+  color: #27ae60;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* ---------- Teacher List ---------- */
+.teacher-list {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
+}
+
+.teacher-list:hover {
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.teacher-list h2 {
+  margin-bottom: 20px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.teacher-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.teacher-list th,
+.teacher-list td {
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.teacher-list th {
+  background-color: #3498db;
+  color: white;
+  font-weight: 600;
+}
+
+.teacher-list tr:nth-child(even) {
+  background-color: #f7f9fb;
+}
+
+.teacher-list tr:hover {
+  background-color: #e8f0fb;
+}
+
+.teacher-list input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.teacher-list button {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.teacher-list button:first-child {
+  background-color: #3498db;
+  color: white;
+}
+
+.teacher-list button:first-child:hover {
+  background-color: #2980b9;
+}
+
+.teacher-list button:last-child {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.teacher-list button:last-child:hover {
+  background-color: #c0392b;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .admin-dashboard {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    position: relative;
+    height: auto;
+    padding: 15px 0;
+  }
+  .content {
+    margin-left: 0;
+    padding: 20px;
+  }
+  .sidebar button {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+
+
+
+
+.student-profile {
+  background: #fff;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.student-profile h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.student-profile p {
+  font-size: 16px;
+  margin: 10px 0;
+  color: #333;
+}
+
+.student-profile strong {
+  color: #2c3e50;
+}
+
+.student-profile label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #34495e;
+}
+
+.student-profile input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border 0.2s;
+}
+
+.student-profile input:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.student-profile button {
+  padding: 10px 18px;
+  margin: 8px 8px 0 0;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.student-profile button:first-of-type {
+  background: #3498db;
+  color: white;
+}
+
+.student-profile button:first-of-type:hover {
+  background: #2980b9;
+}
+
+.student-profile button:last-of-type {
+  background: #e74c3c;
+  color: white;
+}
+
+.student-profile button:last-of-type:hover {
+  background: #c0392b;
+}
+
+
+
+.password-container {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 25px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.password-container h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.password-container label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #34495e;
+}
+
+.password-container input {
+  width: 95%;
+  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.password-container input:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.password-container button {
+  width: 100%;
+  padding: 10px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+.password-container button:hover {
+  background: #2980b9;
+}
+
+.password-container .success {
+  margin-top: 15px;
+  color: green;
+  font-weight: bold;
+  text-align: center;
+}
+
+.password-container .error {
+  margin-top: 15px;
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
