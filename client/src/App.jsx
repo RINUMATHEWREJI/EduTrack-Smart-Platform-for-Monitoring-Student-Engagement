@@ -12,6 +12,9 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import './App.css'
 import StudentCourses from "./components/StudentCourses";
 import StudentCourseDetail from "./pages/StudentCourseDetail";
+import AttentionCourseDetails from "./pages/AttentionCourseDetails";
+import StudentAnalytics from "./pages/StudentAnalytics";
+import StudentSummary from "./pages/StudentSummary";
 
 function App() {
   return (
@@ -50,6 +53,16 @@ function App() {
        </ProtectedRoute>
       } 
     />
+    <Route 
+        path="attentive/courses/:id" 
+      element={
+       <ProtectedRoute allowedRoles={["TEACHER"]}>
+        <AttentionCourseDetails />
+       </ProtectedRoute>
+      } 
+    />
+    <Route path="/materials/:materialId/students" element={<StudentAnalytics />} />
+    <Route path="/materials/:materialId/summary" element={<StudentSummary />} />
     <Route path="/student/courses" element={<StudentCourses />} />
     <Route path="/student/courses/:id" element={<StudentCourseDetail />} />
 

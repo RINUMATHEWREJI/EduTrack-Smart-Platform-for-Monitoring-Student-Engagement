@@ -28,6 +28,7 @@ urlpatterns = [
     path("", home),   # <--- root URL,
     path("api/",include("users.urls")),
     path("api/",include("courses.urls")),
+     path("api/", include("attention.urls")),
 ]
 
 if settings.DEBUG:

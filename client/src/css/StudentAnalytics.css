@@ -1,0 +1,74 @@
+.student-analytics {
+  padding: 2rem;
+  max-width: 900px;
+  margin: auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.header h2 {
+  font-size: 1.6rem;
+  color: #222;
+}
+
+.back-btn {
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  background: #e5e7eb;
+  color: #333;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #d1d5db;
+}
+
+.table-container {
+  overflow-x: auto; /* responsive */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+thead {
+  background: #f3f4f6;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.8rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+tbody tr:hover {
+  background: #f9fafb;
+}
+
+.attentive {
+  color: #16a34a; /* green */
+  font-weight: 600;
+}
+
+.distracted {
+  color: #dc2626; /* red */
+  font-weight: 600;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #555;
+}

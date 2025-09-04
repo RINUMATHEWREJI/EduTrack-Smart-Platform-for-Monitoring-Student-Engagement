@@ -9,6 +9,7 @@ import TeacherProfile from "../components/TeacherProfile";
 import ChangePassword from "../components/ChangePassword";
 import CourseList from "../components/CourseList";
 import CreateCourse from "../components/CreateCourse";
+import CourseListSub from "../components/CourseListSub";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -83,6 +84,15 @@ function TeacherPage() {
         >
           Courses
         </button>
+        <button
+          className={activePage === "attentive" ? "active" : ""}
+          onClick={() => {
+            setActivePage("attentive");
+          
+          }}
+        >
+        Students Perfomance
+        </button>
         <button className="logout-btn" onClick={handleLogout}>
           Logout
         </button>
@@ -107,6 +117,9 @@ function TeacherPage() {
         )}
         {activePage === "courses" && (
           <CourseList />
+        )}
+        {activePage === "attentive" && (
+          <CourseListSub />
         )}
       </div>
     </div>

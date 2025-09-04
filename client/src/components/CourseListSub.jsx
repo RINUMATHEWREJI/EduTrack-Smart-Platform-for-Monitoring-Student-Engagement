@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getAccessToken } from "../utils/auth";
-import "../css/CourseList.css"; // add CSS
+import "../css/CourseListSub.css"; // add this CSS file
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-function CourseList() {
+function CourseListSub() {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
 
@@ -34,10 +34,10 @@ function CourseList() {
             <h3>{course.title}</h3>
             <p>{course.description}</p>
             <button
-              className="manage-btn"
-              onClick={() => navigate(`/courses/${course.id}`)}
+              className="view-btn"
+              onClick={() => navigate(`/attentive/courses/${course.id}`)}
             >
-              Manage Materials
+              View Materials
             </button>
           </div>
         ))}
@@ -46,4 +46,4 @@ function CourseList() {
   );
 }
 
-export default CourseList;
+export default CourseListSub;

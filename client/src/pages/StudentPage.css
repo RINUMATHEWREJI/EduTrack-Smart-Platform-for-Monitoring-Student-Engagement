@@ -407,6 +407,8 @@ body {
 
 .student-courses {
   padding: 20px;
+  
+  background: linear-gradient(135deg, #84a2d5, #19448d);
 }
 
 .student-courses h2 {

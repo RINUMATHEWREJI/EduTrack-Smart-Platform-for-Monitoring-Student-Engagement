@@ -19,7 +19,7 @@ urlpatterns = [
     path("courses/<int:course_id>/enrollments/", CourseEnrollmentsView.as_view(), name="course-enrollments"),
 
 
-     path("courses/<int:course_id>/materials/", CourseMaterialCreateView.as_view(), name="course-materials"),
+    path("courses/<int:course_id>/materials/", CourseMaterialCreateView.as_view(), name="course-materials"),
     path("courses/<int:course_id>/materials/<int:material_id>/", CourseMaterialDetailView.as_view(), name="course-material-detail"),
 
 
