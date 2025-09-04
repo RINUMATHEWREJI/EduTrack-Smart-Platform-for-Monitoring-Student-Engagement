@@ -27,6 +27,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", home),   # <--- root URL,
     path("api/",include("users.urls")),
+    path("api/",include("courses.urls")),
 ]
 
 if settings.DEBUG:

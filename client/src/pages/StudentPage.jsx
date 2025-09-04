@@ -2,16 +2,13 @@ import { useState } from "react";
 import { getAccessToken, logout } from "../utils/auth";
 import { useNavigate } from "react-router-dom";
 import './StudentPage.css'
-import axios from "axios";
 import StudentProfile from "../components/StudentProfile";
 import ChangePassword from "../components/ChangePassword";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import StudentCourses from "../components/StudentCourses";  // NEW
 
 function StudentPage() {
   const navigate = useNavigate();
-  const [activePage, setActivePage] = useState("viewprofile"); // "register" or "view"
-
+  const [activePage, setActivePage] = useState("courses");
 
   const handleLogout = () => {
     logout();
@@ -23,19 +20,28 @@ function StudentPage() {
       {/* Left Sidebar */}
       <div className="sidebar">
         <h2>Student Menu</h2>
+        
         <button
-          className={activePage === "viewprofie" ? "active" : ""}
+          className={activePage === "viewprofile" ? "active" : ""}
           onClick={() => setActivePage("viewprofile")}
         >
           View Profile
         </button>
+
         <button
           className={activePage === "changepassword" ? "active" : ""}
           onClick={() => setActivePage("changepassword")}
         >
           Change Password
         </button>
-        
+
+        <button
+          className={activePage === "courses" ? "active" : ""}
+          onClick={() => setActivePage("courses")}
+        >
+          My Courses
+        </button>
+
         <button className="logout-btn" onClick={handleLogout}>
           Logout
         </button>
@@ -43,16 +49,12 @@ function StudentPage() {
 
       {/* Right Content */}
       <div className="content">
-        {activePage === "viewprofile" && (
-          <StudentProfile />
-        )}
-        {activePage === "changepassword" && (
-          <ChangePassword />
-        )}
-        
+        {activePage === "viewprofile" && <StudentProfile />}
+        {activePage === "changepassword" && <ChangePassword />}
+        {activePage === "courses" && <StudentCourses />}
       </div>
     </div>
   );
 }
 
-export default StudentPage
+export default StudentPage;

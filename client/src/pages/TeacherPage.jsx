@@ -7,13 +7,15 @@ import RegisterStudentForm from "../components/RegisterStudentForm";
 import axios from "axios";
 import TeacherProfile from "../components/TeacherProfile";
 import ChangePassword from "../components/ChangePassword";
+import CourseList from "../components/CourseList";
+import CreateCourse from "../components/CreateCourse";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function TeacherPage() {
   const navigate = useNavigate();
   const [students, setStudents] = useState([]);
-  const [activePage, setActivePage] = useState("register"); // "register" or "view"
+  const [activePage, setActivePage] = useState("courses"); // "register" or "view"
 
   const fetchStudents = async () => {
     try {
@@ -63,6 +65,24 @@ function TeacherPage() {
         >
           View Students
         </button>
+        <button
+          className={activePage === "createcourses" ? "active" : ""}
+          onClick={() => {
+            setActivePage("createcourses");
+          
+          }}
+        >
+          Create Courses
+        </button>
+        <button
+          className={activePage === "courses" ? "active" : ""}
+          onClick={() => {
+            setActivePage("courses");
+          
+          }}
+        >
+          Courses
+        </button>
         <button className="logout-btn" onClick={handleLogout}>
           Logout
         </button>
@@ -81,6 +101,12 @@ function TeacherPage() {
         )}
         {activePage === "view" && (
           <StudentList students={students} fetchStudents={fetchStudents} />
+        )}
+        {activePage === "createcourses" && (
+          <CreateCourse />
+        )}
+        {activePage === "courses" && (
+          <CourseList />
         )}
       </div>
     </div>

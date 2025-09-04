@@ -402,3 +402,75 @@ body {
   font-weight: bold;
   text-align: center;
 }
+
+
+/* CreateCourse.css */
+.create-course {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.create-course h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+
+.create-course input,
+.create-course textarea {
+  width: 93%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.create-course input:focus,
+.create-course textarea:focus {
+  border-color: #4a90e2;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+.create-course textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.create-course button {
+  width: 100%;
+  padding: 0.85rem;
+  background: #4a90e2;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.create-course button:hover {
+  background: #357ab8;
+}
+
+.create-course p {
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.create-course p:contains("✅") {
+  color: #27ae60;
+}
+
+.create-course p:contains("❌") {
+  color: #e74c3c;
+}
