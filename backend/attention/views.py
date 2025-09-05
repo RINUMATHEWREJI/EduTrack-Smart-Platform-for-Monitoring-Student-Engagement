@@ -2,7 +2,7 @@ from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Sum
 from .models import AttentionSession, AttentionRecord
 from .serializers import AttentionSessionSerializer, AttentionRecordSerializer
 from courses.models import CourseMaterial, Course
@@ -88,21 +88,63 @@ class MaterialAttentionSummaryView(APIView):
 
     def get(self, request, material_id):
         material = get_object_or_404(CourseMaterial, id=material_id)
+
         # Guard: only the owner teacher can view
         if material.course.owner != request.user.teacher_profile:
             return Response({"detail": "Not your course/material."}, status=403)
 
-        qs = AttentionRecord.objects.filter(material=material)
-        total = qs.count() or 1
-        attentive_count = qs.filter(attentive=True).count()
-        distracted_count = qs.filter(attentive=False).count()
+        students = StudentProfile.objects.filter(
+            attention_records__material=material
+        ).distinct()
+
+        total_students = students.count()
+        if total_students == 0:
+            return Response({
+                "material_id": material.id,
+                "material_title": material.title,
+                "total_students": 0,
+                "avg_attentive_pct": 0.0,
+                "avg_distracted_pct": 0.0,
+                "avg_time_spent_minutes": 0.0,
+            })
+
+        # accumulators
+        sum_attentive_pct = 0
+        sum_distracted_pct = 0
+        sum_time_minutes = 0
+
+        for student in students:
+            records = AttentionRecord.objects.filter(material=material, student=student)
+            total = records.count()
+            attentive = records.filter(attentive=True).count()
+            distracted = records.filter(attentive=False).count()
+
+            if total > 0:
+                attentive_pct = round(attentive / total * 100, 2)
+                distracted_pct = round(distracted / total * 100, 2)
+            else:
+                attentive_pct = distracted_pct = 0
+
+            sessions = AttentionSession.objects.filter(material=material, student=student)
+            total_seconds = sum([s.duration_seconds for s in sessions])
+            time_minutes = round(total_seconds / 60, 2)
+
+            sum_attentive_pct += attentive_pct
+            sum_distracted_pct += distracted_pct
+            sum_time_minutes += time_minutes
+
+        # compute averages
+        avg_attentive_pct = round(sum_attentive_pct / total_students, 2)
+        avg_distracted_pct = round(sum_distracted_pct / total_students, 2)
+        avg_time_spent_minutes = round(sum_time_minutes / total_students, 2)
 
         return Response({
             "material_id": material.id,
             "material_title": material.title,
-            "total_records": total if total != 1 else qs.count(),
-            "attentive_pct": round(100.0 * attentive_count / total, 2) if total else 0.0,
-            "distracted_pct": round(100.0 * distracted_count / total, 2) if total else 0.0,
+            "total_students": total_students,
+            "avg_attentive_pct": avg_attentive_pct,
+            "avg_distracted_pct": avg_distracted_pct,
+            "avg_time_spent_minutes": avg_time_spent_minutes,
         })
 
 

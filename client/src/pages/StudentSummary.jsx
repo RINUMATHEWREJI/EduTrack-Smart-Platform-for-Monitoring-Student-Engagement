@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { getAccessToken } from "../utils/auth";
-import "../css/StudentSummary.css"; // 👈 add CSS
+import "../css/StudentSummary.css"; // 👈 CSS file
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -41,9 +41,11 @@ function StudentSummary() {
       </div>
 
       <div className="summary-card">
-        <p><strong>Total Records:</strong> {summary.total_records}</p>
-        <p className="attentive"><strong>Attentive %:</strong> {summary.attentive_pct}%</p>
-        <p className="distracted"><strong>Distracted %:</strong> {summary.distracted_pct}%</p>
+        <p><strong>Material:</strong> {summary.material_title}</p>
+        <p><strong>Students:</strong> {summary.num_students}</p>
+        <p className="attentive"><strong>Avg Attentive %:</strong> {summary.avg_attentive_pct}%</p>
+        <p className="distracted"><strong>Avg Distracted %:</strong> {summary.avg_distracted_pct}%</p>
+        <p className="time"><strong>Avg Time Spent:</strong> {summary.avg_time_spent_minutes} min</p>
       </div>
     </div>
   );
