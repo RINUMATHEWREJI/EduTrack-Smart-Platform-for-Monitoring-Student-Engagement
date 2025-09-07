@@ -11,6 +11,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from users.models import StudentProfile
 from courses.models import CourseMaterial
+import datetime
 
 class IsStudent(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -177,29 +178,17 @@ def material_students(request, material_id):
         # total time spent (sum of all sessions for this material)
         sessions = AttentionSession.objects.filter(material=material, student=student)
         total_seconds = sum([s.duration_seconds for s in sessions])
+        time_spent_str = str(datetime.timedelta(seconds=total_seconds))
 
         result.append({
             "student_id": student.id,
             "email": student.user.email,
             "time_spent_seconds": total_seconds,
-            "time_spent_minutes": round(total_seconds / 60, 2),
+            "time_spent_str": time_spent_str,
             "attentive_pct": attentive_pct,
             "distracted_pct": distracted_pct,
         })
 
     return Response(result)        
         
-class StudentMaterialTimelineView(APIView):
-    """For a teacher: timeline of a single student's records for a material."""
-    permission_classes = [IsTeacher]
 
-    def get(self, request, material_id, student_id):
-        material = get_object_or_404(CourseMaterial, id=material_id)
-        if material.course.owner != request.user.teacher_profile:
-            return Response({"detail": "Not your course/material."}, status=403)
-
-        qs = (AttentionRecord.objects
-              .filter(material=material, student_id=student_id)
-              .order_by("timestamp")
-              .values("timestamp", "attentive", "confidence"))
-        return Response(list(qs))

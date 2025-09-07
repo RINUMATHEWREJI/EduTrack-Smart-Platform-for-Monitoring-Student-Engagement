@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     StartAttentionSessionView, RecordAttentionView, StopAttentionSessionView,
-    MaterialAttentionSummaryView, material_students, StudentMaterialTimelineView,
+    MaterialAttentionSummaryView, material_students, 
 )
 from . import views
 
@@ -13,7 +13,6 @@ urlpatterns = [
 
     # Teacher analytics
     path("analytics/materials/<int:material_id>/summary/",   MaterialAttentionSummaryView.as_view()),
-    path("analytics/materials/<int:material_id>/students/<int:student_id>/timeline/", StudentMaterialTimelineView.as_view()),
 
     path("materials/<int:material_id>/students/", views.material_students, name="material_students"),
 ]

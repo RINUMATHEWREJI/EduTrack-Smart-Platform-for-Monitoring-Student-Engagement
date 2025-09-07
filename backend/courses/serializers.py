@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course, CourseMaterial, Enrollment
+from .models import Course, CourseMaterial
 
 
 
@@ -19,10 +19,3 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = "__all__"
         read_only_fields = ["owner","created_at","updated_at"]
-
-
-class EnrollmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Enrollment
-        fields = "__all__"
-        read_only_fields = ["enrolled_at"]

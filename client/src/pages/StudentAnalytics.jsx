@@ -53,7 +53,7 @@ function StudentAnalytics() {
             {students.map((s) => (
               <tr key={s.student_id}>
                 <td>{s.email}</td>
-                <td>{s.time_spent_minutes} min</td>
+                <td>{s.time_spent_str} min</td>
                 <td className="attentive">{s.attentive_pct}%</td>
                 <td className="distracted">{s.distracted_pct}%</td>
               </tr>

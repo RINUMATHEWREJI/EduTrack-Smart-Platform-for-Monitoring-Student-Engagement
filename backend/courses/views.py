@@ -4,9 +4,9 @@ from rest_framework import status,permissions
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import PermissionDenied
 
-from .models import Course,CourseMaterial,Enrollment
+from .models import Course,CourseMaterial
 from .serializers import (
-    CourseSerializer,CourseMaterialSerializer,EnrollmentSerializer
+    CourseSerializer,CourseMaterialSerializer
 )
 
 class CourseListCreateView(APIView):
@@ -24,33 +24,35 @@ class CourseListCreateView(APIView):
             serializer.save(owner = request.user.teacher_profile)
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-class CourseDetailView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_object(self,pk):
-        return get_object_or_404(Course,pk=pk)
     
-    def get(self,request,pk):
-        course = self.get_object(pk)
-        serializer = CourseSerializer(course)
-        return Response(serializer.data)
-    def patch(self,request,pk):
+    
+# class CourseDetailView(APIView):
+#     permission_classes = [permissions.IsAuthenticated]
 
-        course = self.get_object(pk)
-        if request.user.teacher_profile != course.owner:
-            raise PermissionDenied("Not your course!")
-        serializer = CourseSerializer(course, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def get_object(self,pk):
+#         return get_object_or_404(Course,pk=pk)
+    
+#     def get(self,request,pk):
+#         course = self.get_object(pk)
+#         serializer = CourseSerializer(course)
+#         return Response(serializer.data)
+#     def patch(self,request,pk):
 
-    def delete(self, request, pk):
-        course = self.get_object(pk)
-        if request.user.teacher_profile != course.owner:
-            raise PermissionDenied("Not your course!")
-        course.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#         course = self.get_object(pk)
+#         if request.user.teacher_profile != course.owner:
+#             raise PermissionDenied("Not your course!")
+#         serializer = CourseSerializer(course, data=request.data, partial=True)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#     def delete(self, request, pk):
+#         course = self.get_object(pk)
+#         if request.user.teacher_profile != course.owner:
+#             raise PermissionDenied("Not your course!")
+#         course.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
@@ -80,26 +82,8 @@ class CourseMaterialCreateView(APIView):
 
 
 
-# Enrollments
-class EnrollView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request, course_id):
-        serializer = EnrollmentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(course_id=course_id, student=request.user.student_profile)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class MyEnrollmentsView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        enrollments = request.user.student_profile.enrollments.all()
-        serializer = EnrollmentSerializer(enrollments, many=True)
-        return Response(serializer.data)
-    
+   
 # courses/views.py
 class MyCoursesView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -112,22 +96,7 @@ class MyCoursesView(APIView):
         serializer = CourseSerializer(courses, many=True)
         return Response(serializer.data)
 
-class CourseEnrollmentsView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request, course_id):
-        # Ensure user is a teacher
-        if not hasattr(request.user, "teacher_profile"):
-            raise PermissionDenied("Only teachers can view enrollments.")
-
-        # Get course and check ownership
-        course = get_object_or_404(Course, id=course_id)
-        if course.owner != request.user.teacher_profile:
-            raise PermissionDenied("Not your course!")
-
-        enrollments = course.enrollments.all()
-        serializer = EnrollmentSerializer(enrollments, many=True)
-        return Response(serializer.data)
 
 # views.py
 class CourseDetailView(APIView):
